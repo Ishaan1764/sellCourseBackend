@@ -1,6 +1,6 @@
 const {Schema, mongo, default: mongoose}=require("mongoose");
 const objId= Schema.ObjectId;
-mongoose.connect("mongodb+srv://ishaansaluja1764:mJAKIAZwb4v8ax3r@cluster0.tgtp8.mongodb.net/");
+// mongoose.connect("mongodb+srv://ishaansaluja1764:mJAKIAZwb4v8ax3r@cluster0.tgtp8.mongodb.net/");
 const userSchema=Schema({
     email:{type: String, unique: true},
     password: String,
