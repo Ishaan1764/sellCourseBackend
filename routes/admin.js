@@ -108,6 +108,7 @@ adminRouter.put("/course",adminMiddleware,async function(req,res){
         creatorId:adminId
     },{
         title, description, price,imageUrl
+        
     })
     res.json({
         message:"course Updated",

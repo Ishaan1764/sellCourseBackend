@@ -1,11 +1,13 @@
 const { Router } = require("express");
-const { userModel } = require("../db");
+const { userModel, purchaseModel } = require("../db");
 const userRouter = Router();
 const bcrypt = require("bcrypt");
 const { z } = require('zod');
 const jwt=require('jsonwebtoken');
 const {JWT_SECRET_USER}=require('../config');
+const {userMiddleware}=require("../middleware/userMiddleware");
 
+//!Signup Schema
 const signupSchema = z.object({
     email: z.string().email(),
 
@@ -78,8 +80,14 @@ userRouter.post("/signin", async function (req, res) {
     }
 });
 
+
 //!Purchase
-userRouter.get("/purchases", function (req, res) {
+userRouter.get("/purchases", userMiddleware,async function (req, res) {
+
+    const userId=req.userId;
+
+    const purchases= await purchaseModel.find({userId,});
+
     res.json({
         msg: "purchases end point"
     });
