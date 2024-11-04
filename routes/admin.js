@@ -87,7 +87,10 @@ adminRouter.post("/course",adminMiddleware,async function(req,res){
 
     const{title, description, price,imageUrl}=req.body;
     //* use multer to take images from user.
-    await courseModel.create({
+    await courseModel.updateOne({
+        _id:courseId,
+        creatorId:adminId
+    },{
         title:title, description, price,imageUrl,creatorId:adminId
     })
     res.json({
@@ -95,14 +98,34 @@ adminRouter.post("/course",adminMiddleware,async function(req,res){
         courseId: course._id
     });
 });
-adminRouter.put("/course",function(req,res){
+
+//!/course PUT
+adminRouter.put("/course",adminMiddleware,async function(req,res){
+    const adminId= req.adminId;
+
+    const{title, description, price,imageUrl,courseId}=req.body;
+    const course = await courseModel.updateOne({
+        _id:courseId,
+        creatorId:adminId
+    },{
+        title, description, price,imageUrl
+    })
     res.json({
-        msg:"Admin update Course endpoint!"
+        message:"course Updated",
+        courseId: course._id
     });
 });
-adminRouter.get("/course/bulk",function(req,res){
+
+//! Get all Courses
+adminRouter.get("/course/bulk",adminMiddleware,async function(req,res){
+    const adminId= req.adminId;
+
+    const courses= await courseModel.find({
+        creatorId:adminId
+    })
     res.json({
-        msg:"Admin get all Courses endpoint!"
+        message:"Your Courses",
+        courses
     });
 });
 
