@@ -1,5 +1,8 @@
-const JWT_SECRET_USER="user@123";
-const JWT_SECRET_ADMIN="admin@123";
+require('dotenv').config();
+
+
+const JWT_SECRET_USER=process.env.JWT_SECRET_USER;
+const JWT_SECRET_ADMIN=process.env.JWT_SECRET_ADMIN;
 
 module.exports={
     JWT_SECRET_ADMIN,
