@@ -20,7 +20,8 @@ const courseSchema=Schema({
     description:String,
     price:Number,
     imageUrl:String,
-    creatorId:objId
+    creatorId:objId,
+    courseId:objId
 });
 
 const purchaseSchema=Schema({

@@ -87,12 +87,10 @@ adminRouter.post("/course",adminMiddleware,async function(req,res){
 
     const{title, description, price,imageUrl}=req.body;
     //* use multer to take images from user.
-    await courseModel.updateOne({
-        _id:courseId,
-        creatorId:adminId
-    },{
+    const course=await courseModel.create({
         title:title, description, price,imageUrl,creatorId:adminId
-    })
+    });
+    
     res.json({
         message:"course Created",
         courseId: course._id
@@ -104,6 +102,7 @@ adminRouter.put("/course",adminMiddleware,async function(req,res){
     const adminId= req.adminId;
 
     const{title, description, price,imageUrl,courseId}=req.body;
+    // yaha jiska course hoga sirf vo hi update kr skta hai aur koi nhi ok. 
     const course = await courseModel.updateOne({
         _id:courseId,
         creatorId:adminId
