@@ -11,3 +11,8 @@ Initialize a new Node. js project
 - Complete the routes for user login, signup, purchase a course, see course (Extra points - Use express routing to
 better structure your routes)
 - Create the frontend
+
+## Good to have includes
+- cookie instead of JWT for auth
+- Add a rate limiting middleware
+- frontend in ejs/REACT
