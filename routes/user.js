@@ -4,7 +4,7 @@ const userRouter = Router();
 const bcrypt = require("bcrypt");
 const { z } = require('zod');
 const jwt=require('jsonwebtoken');
-const JWT_SECRET_USER="user@123";
+const {JWT_SECRET_USER}=require('../config');
 
 const signupSchema = z.object({
     email: z.string().email(),
@@ -59,24 +59,18 @@ userRouter.post("/signup", async function (req, res) {
 userRouter.post("/signin", async function (req, res) {
     try {
         const { email, password } = req.body;
-
         // Find the user by email
         const user = await userModel.findOne({ email: email });
-        
         if (!user) {
             return res.status(403).json({ message: "Incorrect Credentials" });
         }
-
         // Compare the provided password with the stored hashed password
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        
         if (!isPasswordValid) {
             return res.status(403).json({ message: "Incorrect Credentials" });
         }
-
         // Generate JWT token
         const token = jwt.sign({ id: user._id }, JWT_SECRET_USER, { expiresIn: '1h' });
-
         // Send token in response
         res.json({ token: token });
     } catch (error) {

@@ -3,8 +3,9 @@ const adminRouter=Router();
 const bcrypt = require("bcrypt");
 const { z } = require('zod');
 const jwt=require('jsonwebtoken');
-const JWT_SECRET_ADMIN="admin@123";
-const {adminModel}=require("../db");
+const {JWT_SECRET_ADMIN}=require("../config");
+const {adminModel, courseModel}=require("../db");
+const {adminMiddleware}=require("../middleware/adminMiddleware");
 
 //!SIGNUP SCHEMA
 const signupSchema = z.object({
@@ -56,6 +57,8 @@ adminRouter.post("/signup",async function(req,res)
         });
     }
 });
+
+//!Signin
 adminRouter.post("/signin",async function(req,res){
     try {
         const { email, password } = req.body;
@@ -77,9 +80,19 @@ adminRouter.post("/signin",async function(req,res){
         res.status(500).json({ message: "An error occurred during sign-in", error: error.message });
     }
 });
-adminRouter.post("/course",function(req,res){
+
+//!Course
+adminRouter.post("/course",adminMiddleware,async function(req,res){
+    const adminId= req.adminId;
+
+    const{title, description, price,imageUrl}=req.body;
+    //* use multer to take images from user.
+    await courseModel.create({
+        title:title, description, price,imageUrl,creatorId:adminId
+    })
     res.json({
-        msg:"Admin Create Course endpoint!"
+        message:"course Created",
+        courseId: course._id
     });
 });
 adminRouter.put("/course",function(req,res){
